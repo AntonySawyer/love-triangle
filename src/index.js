@@ -3,23 +3,19 @@
  * @returns number of love triangles
  */
 module.exports = function getLoveTrianglesCount(preferences = []) {
-	var count = 0;
-	for (var i = 0; i < preferences.length; i++) {
+	let count = 0;
+	for (let i = 0; i < preferences.length; i++) {
 /* firstPosition - starts with 1, second and third positions = first and second values*/
-		var firstValue = preferences[i]; 
-		var secondValue = preferences[firstValue - 1];  
-		var thirdValue = preferences[secondValue - 1]; 
-		var firstPosition = i + 1; 
-
-		if (firstValue != 0 && secondValue != 0 && thirdValue != 0 
-			&& thirdValue == firstPosition 
-			&& firstPosition != firstValue && firstValue != secondValue) {
+		const firstValue = preferences[i];
+		const secondValue = preferences[firstValue - 1];
+		const thirdValue = preferences[secondValue - 1];
+		const egoCondition = firstValue != i + 1;
+		const secondCondition = thirdValue == i + 1 && firstValue != secondValue;
+/* check conditions and rewrite to exclude re-use */
+		if (egoCondition && secondCondition) {
 			count ++;
-/* rewrite to exclude re-use (first line in if statment) */
-			preferences[firstPosition-1] = 0;
-			preferences[firstValue-1] = 0;
-			preferences[secondValue - 1] = 0;
-		}			
+			preferences[i] = 0;
+		}
 	}
 	return count;
 };
